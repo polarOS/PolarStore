@@ -1,0 +1,8 @@
+{
+    "__information": "This is the store information, which will be used to show in the store information pop-up screen",
+
+    "name": "PolarStore",
+    "version": "0.0.1",
+    "cli": "pstr --help",
+    "developers": ["asciidude"]
+}

@@ -1,0 +1,63 @@
+<html>
+    <%- include('./partials/head.ejs') %>
+
+    <style type="text/css">
+        :root {
+            --stroke-size-positive: 1px;
+            --stroke-size-negative: -1px;
+        }
+
+        body {
+            background: url("https://wallpaperaccess.com/full/4578310.jpg") no-repeat fixed center;
+        }
+
+        .container {
+            padding: 50px;
+            background-color: white;
+            border-radius: 20px;
+            border: 2px solid rgb(100, 111, 255);
+            padding-bottom: 13px;
+        }
+
+        .stroke {
+            -webkit-filter: drop-shadow(2px 2px 0 black)
+                drop-shadow(-1px 1px 0 black)
+                drop-shadow(1px -1px 0 black)
+                drop-shadow(-1px -1px 0 black);
+
+            filter: drop-shadow(var(--stroke-size-positive) var(--stroke-size-positive) 0 black)
+                    drop-shadow(var(--stroke-size-negative) var(--stroke-size-positive) 0 black)
+                    drop-shadow(var(--stroke-size-positive) var(--stroke-size-negative) 0 black)
+                    drop-shadow(var(--stroke-size-negative) var(--stroke-size-negative) 0 black);
+        }
+    </style>
+
+    <body>
+        <div class="text-center container position-absolute top-50 start-50 translate-middle" style="max-width: 480px; margin: auto;">
+            <img src="/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
+            <h2 class="mb-3 fw-bold text-primary">Register</h2>
+    
+            <form action="/api/users/register" method="POST">
+                <label for="email" class="sr-only"></label>
+                <input type="email" placeholder="Email Address" id="email" name="email" class="form-control mb-1" required>
+                
+                <label for="username" class="sr-only"></label>
+                <input type="text" placeholder="Username" id="username" name="username" class="form-control mb-1" required>
+    
+                <label for="password" class="sr-only"></label>
+                <input type="password" placeholder="Password" id="password" name="password" class="form-control mb-1" required>
+    
+                <div class="form-check text-start">
+                    <input class="form-check-input" type="checkbox" id="13plus">
+                    <label class="form-check-label" for="13plus">
+                        I am 13 years of age or older
+                    </label>
+                </div>
+    
+                <button type="submit" class="btn btn-primary btn-block mt-3">Register</button>
+                <p>or <a href="/login">login</a></p>
+                <p class="small">* You are registering this account with <span class="fw-bold">PolarID</span></p>
+            </form>
+        </div>
+    </body>
+</html>

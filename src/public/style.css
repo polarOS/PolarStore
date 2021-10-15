@@ -1,0 +1,39 @@
+:root {
+    --light: #fffff;
+    --dark: rgb(25, 25, 25);
+}
+
+body[theme="dark"] {
+    --light: rgb(25, 25, 25);
+    --dark: #fffff;
+}
+
+.light {
+    color: var(--dark);
+    background: var(--dark);
+}
+
+.dark {
+    color: var(--dark);
+    background: var(--light);
+}
+
+body {
+    background: var(--light);
+    color: var(--dark);
+}
+
+#theme-switch {
+    cursor: pointer;
+    transition: transform 0.7s;
+}
+
+.flip {
+    transform: rotate(-360deg) !important;
+}
+
+.input-outline-0 {
+    outline:0px !important;
+    -webkit-appearance:none;
+    box-shadow: none !important;
+}
