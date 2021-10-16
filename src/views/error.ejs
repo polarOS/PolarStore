@@ -1,0 +1,43 @@
+<html>
+    <%- include('./partials/head.ejs') %>
+
+    <style type="text/css">
+        :root {
+            --stroke-size-positive: 1px;
+            --stroke-size-negative: -1px;
+        }
+
+        body {
+            background: url("https://wallpapercrafter.com/desktop/229428-dark-clouds-amassing-over-white-ridges-at-the-shor.jpg") no-repeat fixed center;
+        }
+
+        .container {
+            padding: 50px;
+            background-color: white;
+            border-radius: 20px;
+            border: 2px solid rgb(100, 111, 255);
+            padding-bottom: 13px;
+        }
+
+        .stroke {
+            -webkit-filter: drop-shadow(2px 2px 0 black)
+                drop-shadow(-1px 1px 0 black)
+                drop-shadow(1px -1px 0 black)
+                drop-shadow(-1px -1px 0 black);
+
+            filter: drop-shadow(var(--stroke-size-positive) var(--stroke-size-positive) 0 black)
+                    drop-shadow(var(--stroke-size-negative) var(--stroke-size-positive) 0 black)
+                    drop-shadow(var(--stroke-size-positive) var(--stroke-size-negative) 0 black)
+                    drop-shadow(var(--stroke-size-negative) var(--stroke-size-negative) 0 black);
+        }
+    </style>
+
+    <body>
+        <div class="text-center container position-absolute top-50 start-50 translate-middle" style="max-width: 480px; margin: auto;">
+            <img src="/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
+            
+            <h4 class="mb-3 fw-bold text-primary">Oops!</h4>
+            <p><%- error %> Click <a href="/">here</a> to go back home.</p>
+        </div>
+    </body>
+</html>

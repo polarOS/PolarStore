@@ -40,11 +40,11 @@
                 <h2 class="mb-3 fw-bold text-primary">Post Application</h2>
                 <div class="input-group mb-3">
                     <label for="name" class="sr-only"></label>
-                    <input type="text" placeholder="Application Name" id="name" name="name" class="form-control" pattern="^[a-zA-Z0-9 ]+$" required>
+                    <input type="text" placeholder="Application Name" id="name" name="name" class="form-control" pattern="^[a-zA-Z0-9 ]+$" maxlength="24" required>
 
                     <label for="version" class="sr-only"></label>
                     <span class="input-group-text" id="basic-addon1">v</span>
-                    <input type="text" placeholder="1.0.0" id="version" name="version" class="form-control" required>
+                    <input type="text" placeholder="1.0.0" id="version" name="version" class="form-control" pattern="^[0-9.]+$" maxlength="5" required>
                 </div>
 
                 <label for="description" class="sr-only"></label>
@@ -52,6 +52,9 @@
 
                 <label for="download" class="sr-only"></label>
                 <input type="text" placeholder="Download Link (must be a zip file)" id="download" name="download" class="form-control mb-1" required>
+
+                <label for="icon" class="sr-only"></label>
+                <input type="text" placeholder="Logo link" id="icon" name="icon" class="form-control mb-1" required>
 
                 <label for="compatability"></label>
 

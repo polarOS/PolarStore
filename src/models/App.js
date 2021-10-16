@@ -1,6 +1,7 @@
-const schema = require('mongoose').Schema({
+const schema = new require('mongoose').Schema({
     name: String,
     download: String,
+    logo: String,
     version: String,
     description: String,
     rating: Number,
@@ -8,9 +9,7 @@ const schema = require('mongoose').Schema({
     compatibility: String,
     language: String,
     maturityRating: String,
-    category: String,
-    price: Number || String,
-    copyright: String
+    category: String
 });
 
 module.exports = require('mongoose').model('App', schema);
