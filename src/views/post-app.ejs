@@ -48,13 +48,13 @@
                 </div>
 
                 <label for="description" class="sr-only"></label>
-                <textarea placeholder="Application Description" id="description" name="description" class="form-control mb-1" style="resize: none;" required></textarea>
+                <textarea placeholder="Application Description (max. 150)" maxlength="150" id="description" name="description" class="form-control mb-1" style="resize: none;" required></textarea>
 
                 <label for="download" class="sr-only"></label>
                 <input type="text" placeholder="Download Link (must be a zip file)" id="download" name="download" class="form-control mb-1" required>
 
                 <label for="icon" class="sr-only"></label>
-                <input type="text" placeholder="Logo link" id="icon" name="icon" class="form-control mb-1" required>
+                <input type="text" placeholder="Banner image link (optional)" id="icon" name="icon" class="form-control mb-1">
 
                 <label for="compatability"></label>
 
@@ -119,3 +119,19 @@
         });
     </script>
 <% } %>
+
+<script>
+    $('#description').charCounter({
+        customClass: 'charCounter',
+        fontSize: '10px',
+        divider: 'dash'
+    });
+</script>
+
+<style>
+    .charCounter {
+        text-align: left;
+        padding: 5px;
+        font-weight: bold;
+    }
+</style>

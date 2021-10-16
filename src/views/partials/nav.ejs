@@ -52,9 +52,11 @@
 
             if($('body').attr('theme') == 'dark') {
                 $('body').attr('theme', 'light');
+                $('#theme-text').css('color', 'black');
                 Cookies.set('theme', 'light');
             } else {
                 $('body').attr('theme', 'dark');
+                $('#theme-text').css('color', 'white');
                 Cookies.set('theme', 'dark');
             }
         });
