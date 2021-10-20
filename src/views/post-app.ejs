@@ -133,7 +133,7 @@
              .replace(/'/g, "&#039;");
     }
 
-    $('textarea[maxlength]').maxlength({
+    $('textarea[maxlength], input[maxlength]').maxlength({
         alwaysShow: true,
         threshold: 10,
         warningClass: "text text-success",
