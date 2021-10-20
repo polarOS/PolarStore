@@ -34,11 +34,11 @@
 
     <body>
         <div class="text-center container position-absolute top-50 start-50 translate-middle" style="max-width: 480px; margin: auto;">
-            <img src="/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
+            <img src="/images/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
             
             <form action="/api/apps/post" method="POST" id="post">
                 <h2 class="mb-3 fw-bold text-primary">Post Application</h2>
-                <div class="input-group mb-3">
+                <div class="input-group mb-1">
                     <label for="name" class="sr-only"></label>
                     <input type="text" placeholder="Application Name" id="name" name="name" class="form-control" pattern="^[a-zA-Z0-9 ]+$" maxlength="24" required>
 
@@ -47,8 +47,11 @@
                     <input type="text" placeholder="1.0.0" id="version" name="version" class="form-control" pattern="^[0-9.]+$" maxlength="5" required>
                 </div>
 
-                <label for="description" class="sr-only"></label>
-                <textarea placeholder="Application Description (max. 150)" maxlength="150" id="description" name="description" class="form-control mb-1" style="resize: none;" required></textarea>
+                <label for="shortDescription" class="sr-only"></label>
+                <input type="text" placeholder="Short Description (max. 150)" maxlength="150" id="shortDescription" name="shortDescription" class="form-control mb-1" style="resize: none;" required></input>
+
+                <label for="longDescription" class="sr-only"></label>
+                <textarea placeholder="Long Description (max. 1500)" maxlength="1500" id="longDescription" name="longDescription" class="form-control mb-1" style="resize: none;" required></textarea>
 
                 <label for="download" class="sr-only"></label>
                 <input type="text" placeholder="Download Link (must be a zip file)" id="download" name="download" class="form-control mb-1" required>
@@ -121,17 +124,30 @@
 <% } %>
 
 <script>
-    $('#description').charCounter({
-        customClass: 'charCounter',
-        fontSize: '10px',
-        divider: 'dash'
+    function escapeHtml(unsafe) {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    }
+
+    $('textarea[maxlength]').maxlength({
+        alwaysShow: true,
+        threshold: 10,
+        warningClass: "text text-success",
+        limitReachedClass: "text text-danger"
+    });
+
+    $('#post').submit(() => {
+        $('#version').val(escapeHtml($('#version').val()));
+        $('#name').val(escapeHtml($('#name').val()));
+
+        $('#name').val($('#name').val().replace(/^\s+|\s+$/gm,''));
+        $('#shortDescription').val($('#shortDescription').val().replace(/\r\n|\r|\n/g, ''));
+        $('#longDescription').val($('#longDescription').val().replace(/\r\n|\r|\n/g, '<br>'));
+        $('#shortDescription').val(escapeHtml($('#shortDescription').val()));
+        $('#longDescription').val(escapeHtml($('#longDescription').val()));
     });
 </script>
-
-<style>
-    .charCounter {
-        text-align: left;
-        padding: 5px;
-        font-weight: bold;
-    }
-</style>

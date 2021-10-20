@@ -1,11 +1,13 @@
 :root {
-    --light: #fffff;
+    --light: rgb(255, 255, 255);
     --dark: rgb(25, 25, 25);
+    --card-light: rgb(245, 245, 245);
 }
 
 body[theme="dark"] {
     --light: rgb(25, 25, 25);
-    --dark: #fffff;
+    --card-light: rgb(37, 37, 37);
+    --dark: rgb(255, 255, 255);
 }
 
 .light {
@@ -21,6 +23,14 @@ body[theme="dark"] {
 body {
     background: var(--light);
     color: var(--dark);
+}
+
+* p {
+    color: var(--dark);
+}
+
+.card {
+    background-color: var(--card-light);
 }
 
 #theme-switch {

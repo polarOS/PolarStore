@@ -34,10 +34,10 @@
 
     <body>
         <div class="text-center container position-absolute top-50 start-50 translate-middle" style="max-width: 480px; margin: auto;">
-            <img src="/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
+            <img src="/images/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
             
-            <h4 class="mb-3 fw-bold text-primary">Oops!</h4>
-            <p><%- error %> Click <a href="/">here</a> to go back home.</p>
+            <h4 class="mb-3 fw-bold text-primary"><% if(error) { %> Oops! <% } else { %> Success! <% } %></h4>
+            <p><%- message %> Click <a href="/">here</a> to go back home.</p>
         </div>
     </body>
 </html>

@@ -3,6 +3,7 @@ const path = require('path');
 const app = express();
 const mongoose = require('mongoose');
 const App = require('./src/models/App.js');
+const req = require('express/lib/request');
 require('dotenv').config();
 
 app.set('view engine', 'ejs');
@@ -21,8 +22,15 @@ mongoose.connect(process.env.MONGO_URI, {
 
 app.get('/', (req, res) => {
     App.find({}, (err, apps) => {
-        if(err) return res.render('error', { error: 'We couldn\'t load the apps on the database!' });
+        if(err) return res.render('message', { error: true, message: 'We couldn\'t load the apps on the database!' });
         res.render('index', { apps: apps });
+    });
+});
+
+app.get('/apps/:id', (req, res) => {
+    App.findOne({_id: req.params.id}, (err, app) => {
+        if(err) return res.render('message', { error: true, message: 'Unable to find the specified app!' });
+        res.render('app', { app: app });
     });
 });
 
@@ -58,7 +66,7 @@ app.post('/api/users/login', (req, res) => {
 
 app.post('/api/apps/post', async(req, res, next) => {
     if(req.body.name == undefined || req.body.version == undefined || req.body.name.length > 24 || req.body.version.length > 5) {
-        res.render('error', { error: 'Your post has failed to be created!' });
+        res.render('message', { error: true, message: 'Your post has failed to be created!' });
         return;
     }
 
@@ -67,9 +75,12 @@ app.post('/api/apps/post', async(req, res, next) => {
         download: req.body.download,
         logo: req.body.icon,
         version: req.body.version,
-        description: req.body.description,
-        rating: 0,
+        shortDescription: req.body.shortDescription,
+        longDescription: req.body.longDescription,
+        likes: 0,
+        dislikes: 0,
         author: 'in-dev',
+        authorId: 'in-dev',
         compatibility: req.body.compatibility,
         language: req.body.language,
         maturityRating: req.body.maturityRating,
@@ -78,6 +89,27 @@ app.post('/api/apps/post', async(req, res, next) => {
 
     res.redirect('/post-app?success=true');
     next();
+});
+
+app.post('/api/apps/:id/open', async(req, res, next) => {
+    res.redirect(`/apps/${req.params.id}`);
+    next();
+});
+
+app.post('/api/apps/like', async(req, res, next) => {
+    // Check if account has already liked, somehow...
+    res.redirect(`/apps/${req.params.id}`);
+    next();
+});
+
+app.post('/api/apps/:id/delete', async(req, res, next)  => {
+    /* CHECK IF LOGGED IN & IF USER IS AUTHOR OR ADMIN */
+    App.findOneAndDelete({_id: req.params.id}, (err, app) => {
+        if(err || !app) return res.render('message', { error: true, message: 'Unable to find the specified app!' });
+        
+        res.render('message', { error: false, message: `Successfully removed the application, ${app.name}!` });
+        next();
+    });
 });
 
 app.listen(8000, () => {
