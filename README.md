@@ -1,5 +1,5 @@
 <center>
-    <img src="./src/public/images/polaros-bear.png" width="50px">
+    <img src="./src/public/images/polaros-bear.png" height="135px">
 </center>
 
 <br>
