@@ -1,5 +1,5 @@
 <center>
-    <img src="./src/public/images/polarstore-banner.png" width="500px">
+    <img src="./src/public/images/polaros-bear.png" width="500px">
 </center>
 
 <br>
