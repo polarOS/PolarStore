@@ -2,11 +2,6 @@
     <%- include('./partials/head.ejs') %>
 
     <style type="text/css">
-        :root {
-            --stroke-size-positive: 1px;
-            --stroke-size-negative: -1px;
-        }
-
         body {
             background: url("https://wallpapercrafter.com/desktop/229428-dark-clouds-amassing-over-white-ridges-at-the-shor.jpg") no-repeat fixed center;
         }
@@ -17,18 +12,6 @@
             border-radius: 20px;
             border: 2px solid rgb(100, 111, 255);
             padding-bottom: 13px;
-        }
-
-        .stroke {
-            -webkit-filter: drop-shadow(2px 2px 0 black)
-                drop-shadow(-1px 1px 0 black)
-                drop-shadow(1px -1px 0 black)
-                drop-shadow(-1px -1px 0 black);
-
-            filter: drop-shadow(var(--stroke-size-positive) var(--stroke-size-positive) 0 black)
-                    drop-shadow(var(--stroke-size-negative) var(--stroke-size-positive) 0 black)
-                    drop-shadow(var(--stroke-size-positive) var(--stroke-size-negative) 0 black)
-                    drop-shadow(var(--stroke-size-negative) var(--stroke-size-negative) 0 black);
         }
     </style>
 
@@ -59,9 +42,8 @@
                 <label for="icon" class="sr-only"></label>
                 <input type="text" placeholder="Banner image link (optional)" id="icon" name="icon" class="form-control mb-1">
 
-                <label for="compatability"></label>
-
-                <select class="form-select mb-1" id="compatability" name="compatability" required>
+                <label for="compatibility"></label>
+                <select class="form-select mb-1" id="compatibility" name="compatibility" required>
                     <option value="">Compatible with...</option>
                     <option value="PolarOS">PolarOS</option>
                 </select>
@@ -133,7 +115,7 @@
              .replace(/'/g, "&#039;");
     }
 
-    $('textarea[maxlength], input[maxlength]').maxlength({
+    $('textarea[maxlength], #shortDescription').maxlength({
         alwaysShow: true,
         threshold: 10,
         warningClass: "text text-success",
@@ -145,9 +127,10 @@
         $('#name').val(escapeHtml($('#name').val()));
 
         $('#name').val($('#name').val().replace(/^\s+|\s+$/gm,''));
-        $('#shortDescription').val($('#shortDescription').val().replace(/\r\n|\r|\n/g, ''));
-        $('#longDescription').val($('#longDescription').val().replace(/\r\n|\r|\n/g, '<br>'));
         $('#shortDescription').val(escapeHtml($('#shortDescription').val()));
         $('#longDescription').val(escapeHtml($('#longDescription').val()));
+        $('#icon').val(escapeHtml($('#icon').val()));
+        
+        $('#longDescription').val($('#longDescription').val().replace(/\r\n|\r|\n/g, '<br>'));
     });
 </script>

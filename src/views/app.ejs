@@ -6,30 +6,24 @@
         <div class="mt-3"></div>
 
         <div class="container">
-            <div class="card border-0">
+            <div class="card border-0 mb-3">
                 <img src="<%- app.logo %>" alt="Image not avaliable" class="card-img-top" onerror="imgError(this)" style="max-height: 500px; width: 100%; object-fit: cover;">
                 <div class="card-body">
                     <p class="h5 card-title fw-light d-inline"><%- app.name %> - v<%- app.version %></p>
                 
                     <div class="float-end">
-                        <form action="/api/apps/like" method="post" class="mb-0 d-inline">
-                            <input type="hidden" name="likes" value="<%- app.likes %>">
-                            <p class="h6 d-inline m-3"><button class="btn btn-primary"><i class="fas fa-thumbs-up"></i></button> <%- app.likes.toString() %></p>
+                        <form action="/api/apps/<%- app.id %>/like" method="post" class="mb-0 d-inline">
+                            <p class="h6 d-inline m-3"><button class="btn btn-primary input-outline-0"><i class="fas fa-thumbs-up"></i></button> <%- app.likes %></p>
                         </form>
                         
-                        <form action="/api/apps/dislike" method="post" class="mb-0 d-inline">
-                            <input type="hidden" name="dislikes" value="<%- app.dislikes %>">
-                            <p class="h6 d-inline"><button class="btn btn-primary"><i class="fas fa-thumbs-down"></i></button> <%- app.dislikes.toString() %></p>
+                        <form action="/api/apps/<%- app.id %>/dislike" method="post" class="mb-0 d-inline">
+                            <p class="h6 d-inline"><button class="btn btn-primary input-outline-0"><i class="fas fa-thumbs-down"></i></button> <%- app.dislikes %></p>
                         </form>
-
-                        <script>
-                            console.log('<%- app.likes.toString() %>');
-                        </script>
                     </div>
                     
                     <p class="card-subtitle text-muted"><%- app.shortDescription %></p>
                     <p class="card-text"><%- app.longDescription %></p>
-                    <div class="card-footer mt-auto border-0 p-0" style="background: transparent;">
+                    <div class="card-footer mt-auto border-0 p-0 mb-3" style="background: transparent;">
                         <form action="/api/apps/<%- app._id %>/download" method="post" class="mb-0 d-inline">
                             <button class="btn btn-primary input-outline-0" name="type" value="download">Download App</button>
                             <a href="/" class="btn btn-primary input-outline-0">Back Home</a>
@@ -41,7 +35,57 @@
                             <input type="hidden" name="author" value="<%- app.authorId %>">
                         </form>
                     </div>
-                    <p class="mb-0 mt-2">Developed by <a class="card-text" href=""><%- app.author %></a></p>
+                    <p class="h5 card-title fw-light">Application Information</p>
+                    <i class="fas fa-code d-inline"></i>
+                    <p class="mb-1 mt-2 card-text d-inline">App developer: <a class="fw-bold" href="/users/<%- app.authorId %>"><%- app.author %></a></p>
+                    <div></div>
+                    <img src="/images/polaros-bear.png" class="stroke" height="18">
+                    <p class="card-text d-inline">
+                        Compatibility: <span class="fw-bold"><%- app.compatibility %></span>
+                        <font style="font-size: small;" class="d-inline mb-0 text-danger">* May be compatible with other versions</font>
+                    </p>
+                    <div></div>
+                    <i class="fas fa-globe-americas d-inline"></i>
+                    <p class="mb-1 card-text d-inline">App language: <span class="fw-bold"><%- app.language %></span></p>
+                    <div></div>
+                    <i class="fas fa-cubes d-inline"></i>
+                    <p class="mb-1 mt-2 card-text d-inline">Category: <span class="fw-bold"><%- app.category %></span></p>
+                    <div></div>
+                    <i class="fas fa-child d-inline"></i>
+                    <p class="mb-1 card-text d-inline">Maturity rating: <span class="fw-bold"><%- app.maturityRating %></span></p>
+                    
+                    <p class="h5 mt-2 mb-0 card-title fw-light">Reviews</p>
+                    <p class="text-white td-none mb-2"><a href="#postReview">Click here to post a review</a></p>
+
+                    <!-- if user is not logged in do not let them post reviews -->
+                    <% if(app.reviews.length == 0) { %>
+                        <i class="fas fa-times-circle d-inline"></i>
+                        <p class="d-inline">No reviews yet</span></p>
+                    <% } else { %>
+                        <% app.reviews.forEach((review) => { %>
+                            <div class="container p-2 mb-2 rounded tb-black">
+                                <% if(review.authorId == app.authorId) { %>
+                                    <i class="fas fa-crown d-inline"></i>
+                                <% } else { %>
+                                    <i class="fas fa-user-alt d-inline"></i>
+                                <% } %>
+
+                                <!-- <a href="#review-<%- review.id %>"><i class="fas fa-link tt-white"></i></a> -->
+                                <p class="mb-1 card-text d-inline"><a href="/users/<%- review.authorId %>" class="tt-white" id="review-<%- review.id %>"><%- review.author %></span></a>
+                                <form action="/api/apps/<%- app.id %>/reviews/<%- review.id %>/delete" method="post" class="mb-0 d-inline float-end">
+                                    <a href="#review-<%- review.id %>"><i class="fas fa-link tt-white"></i></a>
+                                    <button class="btn btn-danger input-outline-0 btn-sm m-1"><i class="fas fa-trash"></i></button>
+                                </form>
+
+                                <p class="mb-1 card-text"><%- review.content %></span></p>
+                            </div>
+                        <% }); %>
+                    <% } %>
+
+                    <form class="mt-3" action="/api/apps/<%- app._id %>/reviews/post" method="POST" id="postReview">
+                        <textarea placeholder="Review content" maxlength="1000" id="content" name="content" class="form-control mb-1" style="resize: none;" required></textarea>
+                        <button type="submit" class="btn btn-primary btn-block input-outline-0">Submit Review</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -49,7 +93,25 @@
 </html>
 
 <script>
+    function escapeHtml(unsafe) {
+        return unsafe
+             .replace(/&/g, "&amp;")
+             .replace(/</g, "&lt;")
+             .replace(/>/g, "&gt;")
+             .replace(/"/g, "&quot;")
+             .replace(/'/g, "&#039;");
+    }
+
     $('img').on('error', function () {
         $(this).attr('src', '/images/banner.jpg');
     });
+
+    $('textarea[maxlength], #shortDescription').maxlength({
+        alwaysShow: true,
+        threshold: 10,
+        warningClass: "text text-success",
+        limitReachedClass: "text text-danger"
+    });
+    
+    $('#content').val(escapeHtml($('#content').val()));
 </script>

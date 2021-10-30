@@ -12,7 +12,8 @@ const schema = new require('mongoose').Schema({
     compatibility: String,
     language: String,
     maturityRating: String,
-    category: String
+    category: String,
+    reviews: Array
 });
 
 module.exports = require('mongoose').model('App', schema);

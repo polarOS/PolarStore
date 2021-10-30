@@ -5,11 +5,28 @@
         <%- include('./partials/nav.ejs') %>
         <div class="mt-3"></div>
 
-        <p id="theme-text" class="h4 text-center fw-light mb-3">
-            Featured
-        </p>
-
         <div class="container">
+            <% const hot = Object.keys(apps).reduce((_apps, curr) => _apps.likes ? (apps[curr].likes > _apps.likes ? apps[curr] : _apps) : apps[curr], {}); %>
+                
+            <p class="h4 fw-light d-flex justify-content-center mb-3">Community's Favorite</p>
+
+            <div class="card border-0 mb-2">
+                <img src="<%- hot.logo %>" alt="Image not avaliable" class="card-img-top" onerror="imgError(this)" style="max-height: 100px; width: 100%; object-fit: cover;">
+                <div class="card-body d-flex flex-column">
+                    <p class="h5 card-title fw-light"><%- hot.name %></p>
+                    <p class="card-text"><%- hot.shortDescription %></p>
+                    <div class="card-footer mt-auto border-0 p-0" style="background: transparent;">
+                        <form action="/api/apps/<%- hot._id %>/download" method="post" class="mb-0 d-inline">
+                            <button class="btn btn-primary input-outline-0" name="type" value="download">Download App</button>
+                        </form>
+
+                        <a class="input-outline-0 btn btn-primary" name="type" value="read" href="/apps/<%- hot._id %>">Read More</a>
+                    </div>
+                </div>
+            </div>
+
+            <p class="h4 fw-light d-flex justify-content-center mb-3 mt-3">What's trending?</p>
+
             <div class="row row-cols-1 row-cols-md-2 g-4">
                 <% Object.keys(apps).forEach(key => { %>
                     <div class="col">
@@ -23,9 +40,7 @@
                                         <button class="btn btn-primary input-outline-0" name="type" value="download">Download App</button>
                                     </form>
 
-                                    <form action="/api/apps/<%- apps[key]._id %>/open" method="post" class="mb-0 d-inline">
-                                        <button class="btn btn-primary input-outline-0" name="type" value="read">Read More</button>
-                                    </form>
+                                    <a class="input-outline-0 btn btn-primary" name="type" value="read" href="/apps/<%- apps[key]._id %>">Read More</a>
                                 </div>
                             </div>
                         </div>

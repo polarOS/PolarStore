@@ -1,12 +1,21 @@
 :root {
+    --card-light: rgb(245, 245, 245);
+    --white-tb: rgb(236, 236, 236);
+    --dark-tb: rgb(0, 0, 0);
+    
     --light: rgb(255, 255, 255);
     --dark: rgb(25, 25, 25);
-    --card-light: rgb(245, 245, 245);
+    
+    --stroke-size-positive: 1px;
+    --stroke-size-negative: -1px;
 }
 
 body[theme="dark"] {
-    --light: rgb(25, 25, 25);
     --card-light: rgb(37, 37, 37);
+    --dark-tb: rgb(236, 236, 236);
+    --white-tb: rgb(50, 50, 50);
+    
+    --light: rgb(25, 25, 25);
     --dark: rgb(255, 255, 255);
 }
 
@@ -19,6 +28,12 @@ body[theme="dark"] {
     color: var(--dark);
     background: var(--light);
 }
+
+.tt-white { color: var(--dark) !important; }
+.tt-black { color: var(--light) !important; }
+
+.tb-white { background: var(--dark-tb) !important; }
+.tb-black { background: var(--white-tb) !important; }
 
 body {
     background: var(--light);
@@ -46,4 +61,16 @@ body {
     outline:0px !important;
     -webkit-appearance:none;
     box-shadow: none !important;
+}
+
+.stroke {
+    -webkit-filter: drop-shadow(2px 2px 0 black)
+        drop-shadow(-1px 1px 0 black)
+        drop-shadow(1px -1px 0 black)
+        drop-shadow(-1px -1px 0 black);
+
+    filter: drop-shadow(var(--stroke-size-positive) var(--stroke-size-positive) 0 rgb(70, 70, 70))
+            drop-shadow(var(--stroke-size-negative) var(--stroke-size-positive) 0 rgb(70, 70, 70))
+            drop-shadow(var(--stroke-size-positive) var(--stroke-size-negative) 0 rgb(70, 70, 70))
+            drop-shadow(var(--stroke-size-negative) var(--stroke-size-negative) 0 rgb(70, 70, 70));
 }
