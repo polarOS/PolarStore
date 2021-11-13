@@ -1,4 +1,4 @@
-<img src="./src/public/images/polaros-bear.png" height="135px">
+<img src="./public/images/polaros-bear.png" height="135px">
 
 # PolarStore
 
