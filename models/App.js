@@ -1,4 +1,7 @@
-const schema = new require('mongoose').Schema({
+const { Schema } = require('mongoose');
+const { model } = require('mongoose');
+
+const appSchema = new Schema({
     name: String,
     download: String,
     logo: String,
@@ -16,4 +19,4 @@ const schema = new require('mongoose').Schema({
     reviews: Array
 });
 
-module.exports = require('mongoose').model('App', schema);
+module.exports = model('App', appSchema);

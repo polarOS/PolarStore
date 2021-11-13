@@ -1,0 +1,36 @@
+<html>
+    <%- include('./partials/head.ejs') %>
+
+    <style type="text/css">
+        body {
+            background: url("https://wallpaperaccess.com/full/4578310.jpg") no-repeat fixed center;
+        }
+
+        .container {
+            padding: 50px;
+            background-color: white;
+            border-radius: 20px;
+            border: 2px solid rgb(100, 111, 255);
+            padding-bottom: 13px;
+        }
+    </style>
+
+    <body>
+        <div class="text-center container position-absolute top-50 start-50 translate-middle" style="max-width: 480px;margin:auto;">
+            <% if(error) { %>
+                <div class="alert alert-danger" role="alert">
+                    <h4 class="alert-heading">Failed to login</h4>
+                    <p class="mb-0"><%- error %></p>
+                </div>
+            <% } %>
+
+            <img src="/images/polaros-bear.png" height="50" class="mb-2 stroke">
+            <h2 class="mb-0 fw-bold text-primary">Login</h2>
+
+            <form action="/api/auth" method="GET">
+                <button type="submit" class="btn btn-primary btn-block mt-3"><i class="fab fa-discord"></i> Login with Discord</button>
+                <p class="mt-1">or <a href="/">go home</a></p>
+            </form>
+        </div>
+    </body>
+</html>

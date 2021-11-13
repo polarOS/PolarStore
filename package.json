@@ -4,21 +4,26 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start-dev": "nodemon index.js"
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@fortawesome/fontawesome-free": "^5.15.4",
+    "@oauth-everything/passport-discord": "^1.0.2",
     "bcryptjs": "^2.4.3",
     "dotenv": "^10.0.0",
     "ejs": "^3.1.6",
     "ejs-lint": "^1.2.1",
     "electron": "^15.1.2",
     "express": "^4.17.1",
+    "express-session": "^1.17.2",
     "mongoose": "^6.0.10",
     "nodemon": "^2.0.13",
-    "passport": "^0.5.0"
+    "passport": "^0.5.0",
+    "passport-discord": "https://github.com/tonestrike/passport-discord",
+    "passport-oauth2": "^1.6.1",
+    "passport-oauth2-refresh": "^2.1.0"
   }
 }
