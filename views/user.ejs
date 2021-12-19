@@ -1,0 +1,85 @@
+<html>
+    <%- include('./partials/head.ejs') %>
+
+    <body>
+        <%- include('./partials/nav.ejs') %>
+        <div class="mt-3"></div>
+
+        <div class="container">
+            <div class="card border-0">
+                <div class="card-body">
+                    <a class="thumbnail pull-left" href="/users/<%- profile.discordId %>">
+                        <img
+                            src="https://cdn.discordapp.com/avatars/<%-profile.discordId %>/<%- profile.avatar %>.png"
+                            class="img-square-wrapper"
+                            alt="Image not avaliable"
+                            class="card-img-top"
+                            id="pfp"
+                            width="50px"
+                            style="border-radius: 50px; margin-right: 5px; margin-bottom: 5px;"
+                        >
+                    </a>
+
+                    <p class="h5 card-title fw-light mb-0 fw-lighter"><%- profile.username %></p>
+                    <p class="card-title text-muted"><%- profile.polarStore.motto ? profile.polarStore.motto : 'No motto' %></p>
+
+                    <p class="card-text text-muted mb-0">About this user</p>
+                    <p class="card-text mb-2"><%- profile.polarStore.bio ? profile.polarStore.bio : 'No bio' %></p>
+
+                    <p class="card-text text-muted mb-0">Apps this user created</p>
+                    <% if(profile.polarStore.apps && profile.polarStore.apps.length != 0) { %>
+                        <div class="row row-cols-1 row-cols-md-2 g-4 mb-1">
+                            <% for(app of profile.polarStore.apps) { %>
+                                <div class="col">
+                                    <div class="card border-0 h-100 mt-2" style="background: rgb(25, 25, 25);">
+                                        <img src="<%- app.logo %>" alt="Image not avaliable" class="card-img-top" id="img" onerror="imgError(this)" style="max-height: 100px; width: 100%; object-fit: cover;">
+                                        <div class="card-body d-flex flex-column">
+                                            <p class="h5 card-title fw-light"><%- app.name %></p>
+                                            <p class="card-text"><%- app.shortDescription %></p>
+                                            <div class="card-footer mt-auto border-0 p-0" style="background: transparent;">
+                                                <form action="/api/apps/<%- app._id %>/download" method="post" class="mb-0 d-inline">
+                                                    <button class="btn btn-primary input-outline-0" name="type" value="download">Download App</button>
+                                                </form>
+
+                                                <a class="input-outline-0 btn btn-primary" name="type" value="read" href="/apps/<%- app._id %>">Read More</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    <% } else { %>
+                        <p class="card-text">No apps</p>
+                    <% } %>
+
+                    <% if(user && user.polarStore.admin) { %>
+                        <form class="card-footer mt-auto border-0 p-0 mb-0" method="POST" action="/api/users/<%- profile.discordId %>/delete" style="background: transparent;">
+                            <button type="submit" class="btn btn-danger input-outline-0">Delete Account</button>
+                        </form>
+                    <% } %>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    $('#pfp').on('error', function () {
+        $(this).attr('src', 'https://cdn.discordapp.com/embed/avatars/0.png');
+    });
+
+    $('#img').on('error', function () {
+        $(this).attr('src', '/images/banner.jpg');
+    });
+
+    $('#content').val(escapeHtml($('#content').val()));
+</script>

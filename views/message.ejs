@@ -8,12 +8,12 @@
         }
 
         body {
-            background: url("https://wallpapercrafter.com/desktop/229428-dark-clouds-amassing-over-white-ridges-at-the-shor.jpg") no-repeat fixed center;
+            background: url("/images/bg.jpg") no-repeat fixed center;
         }
 
         .container {
             padding: 50px;
-            background-color: white;
+            background-color: var(--light);
             border-radius: 20px;
             border: 2px solid rgb(100, 111, 255);
             padding-bottom: 13px;
@@ -35,9 +35,9 @@
     <body>
         <div class="text-center container position-absolute top-50 start-50 translate-middle" style="max-width: 480px; margin: auto;">
             <img src="/images/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
-            
+
             <h4 class="mb-3 fw-bold text-primary"><% if(error) { %> Oops! <% } else { %> Success! <% } %></h4>
-            <p><%- message %> Click <a href="/">here</a> to go back home.</p>
+            <p class="text-black"><%- message %> Click <a href="/">here</a> to go back home.</p>
         </div>
     </body>
 </html>

@@ -32,7 +32,7 @@ const strat = new DiscordStrategey({
         profile.refreshToken = refreshToken;
 
         if(!user) {
-            await User.create({
+            await User.create({ id: user.id }, {
                 username: profile.username,
                 discriminator: profile.discriminator,
                 avatar: profile.avatar,
@@ -40,8 +40,12 @@ const strat = new DiscordStrategey({
                 email: profile.email,
                 createdAt: profile.fetchedAt,
                 discordId: profile.id,
-                beta: false,
-                polarStore: {}
+                polarStore:  {
+                    apps: [],
+                    likes: [],
+                    motto: '',
+                    bio: ''
+                }
             });
 
             done(null, user);
@@ -66,7 +70,12 @@ const strat = new DiscordStrategey({
                 email: profile.email,
                 createdAt: profile.fetchedAt,
                 discordId: profile.id,
-                polarStore: {}
+                polarStore: {
+                    apps: user.polarStore.apps ? user.polarStore.apps : [],
+                    likes: user.polarStore.likes ? user.polarStore.likes : [],
+                    motto: user.polarStore.motto ? user.polarStore.motto : '',
+                    bio: user.polarStore.bio ? user.polarStore.bio : '',
+                }
             });
 
             done(null, savedUser);

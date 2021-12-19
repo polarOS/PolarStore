@@ -1,6 +1,6 @@
 :root {
     --card-light: rgb(245, 245, 245);
-    --white-tb: rgb(236, 236, 236);
+    --light-tb: rgb(236, 236, 236);
     --dark-tb: rgb(0, 0, 0);
     
     --light: rgb(255, 255, 255);
@@ -10,42 +10,33 @@
     --stroke-size-negative: -1px;
 }
 
-body[theme="dark"] {
-    --card-light: rgb(37, 37, 37);
-    --dark-tb: rgb(236, 236, 236);
-    --white-tb: rgb(50, 50, 50);
-    
-    --light: rgb(25, 25, 25);
-    --dark: rgb(255, 255, 255);
-}
-
 .light {
     color: var(--dark);
     background: var(--dark);
 }
 
 .dark {
-    color: var(--dark);
-    background: var(--light);
+    color: var(--light);
+    background: var(--dark);
 }
 
-.tt-white { color: var(--dark) !important; }
-.tt-black { color: var(--light) !important; }
+.tt-white { color: var(--light) !important; }
+.tt-black { color: var(--dark) !important; }
 
-.tb-white { background: var(--dark-tb) !important; }
-.tb-black { background: var(--white-tb) !important; }
+.tb-white { background: var(--light-tb) !important; }
+.tb-black { background: var(--dark-tb) !important; }
 
 body {
-    background: var(--light);
-    color: var(--dark);
+    background: var(--dark);
+    color: var(--light);
 }
 
 * p {
-    color: var(--dark);
+    color: var(--light);
 }
 
 .card {
-    background-color: var(--card-light);
+    background-color: var(--card-dark);
 }
 
 #theme-switch {

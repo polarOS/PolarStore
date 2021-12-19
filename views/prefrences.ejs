@@ -1,0 +1,63 @@
+<html>
+    <%- include('./partials/head.ejs') %>
+
+    <body>
+        <%- include('./partials/nav.ejs') %>
+        <div class="mt-3"></div>
+
+        <div class="container">
+            <div class="card border-0">
+                <div class="card-body">
+                    <a class="thumbnail pull-left" href="/users/<%- profile.discordId %>">
+                        <img
+                            src="https://cdn.discordapp.com/avatars/<%- profile.discordId %>/<%- profile.avatar %>.png"
+                            class="img-square-wrapper"
+                            alt="Image not avaliable"
+                            class="card-img-top"
+                            width="50px"
+                            style="border-radius: 50px; margin-right: 5px; margin-bottom: 10px;"
+                        >
+                    </a>
+
+                    <p class="h5 card-title fw-light mb-0 fw-lighter"><%- profile.username %>'s Prefrences</p>
+                    <p class="card-title text-muted"><%- profile.polarStore.motto ? profile.polarStore.motto : 'No motto' %></p>
+
+                    <form class="card-footer mt-auto border-0 p-0 mb-0 d-inline" method="POST" action="/api/users/<%- profile.discordId %>/prefrences/save" style="background: transparent;">
+                        <input placeholder="Motto" maxlength="100" id="motto" name="motto" class="form-control mb-1" style="resize: none;">
+                        <textarea placeholder="Description" maxlength="1500" id="bio" name="bio" class="form-control mb-1" style="resize: none;"></textarea>
+
+                        <button type="submit" class="btn btn-primary input-outline-0">Save Prefrences</button>
+                    </form>
+
+                    <form class="card-footer mt-auto border-0 p-0 mb-0 d-inline" method="POST" action="/api/users/<%- profile.discordId %>/delete" style="background: transparent;">
+                        <button type="submit" class="btn btn-danger input-outline-0" style="margin-top: 2px;">Delete Account</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    function escapeHtml(unsafe) {
+        return unsafe
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+    }
+
+    $('img').on('error', function () {
+        $(this).attr('src', 'https://cdn.discordapp.com/embed/avatars/0.png');
+    });
+
+    $('textarea[maxlength], input[maxlength]').maxlength({
+        alwaysShow: true,
+        threshold: 10,
+        warningClass: "text text-success",
+        limitReachedClass: "text text-danger"
+    });
+
+    $('#content').val(escapeHtml($('#content').val()));
+</script>
