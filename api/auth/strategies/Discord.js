@@ -1,7 +1,10 @@
 const DiscordStrategey = require('passport-discord').Strategy;
-const User = require('../../../models/User');
 const passport = require('passport');
 const refresh = require('passport-oauth2-refresh');
+const User = require('../../../models/User');
+module.exports.newAccount = false;
+
+const mail = require('../../../utils/mail.js')
 
 passport.serializeUser((user, done) => {
     done(null, user.discordId);
@@ -32,7 +35,9 @@ const strat = new DiscordStrategey({
         profile.refreshToken = refreshToken;
 
         if(!user) {
-            await User.create({ id: user.id }, {
+            this.newAccount = true;
+
+            await User.create({
                 username: profile.username,
                 discriminator: profile.discriminator,
                 avatar: profile.avatar,
@@ -60,6 +65,7 @@ const strat = new DiscordStrategey({
 
                 PolarStore data is updated FROM PolarStore, do NOT update PolarStore data
             */
+            if(!user.polarStore) this.newAccount = true;
 
             const savedUser = await User.findOneAndUpdate(
                 { _id: user.id }, {

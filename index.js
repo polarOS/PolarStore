@@ -38,6 +38,24 @@ app.use(passport.session());
 
 // Views
 app.get('/', async (req, res) => {
+    const { newAccount } = require('./api/auth/strategies/Discord');
+    const { send } = require('./utils/mail');
+
+    if(req.user && newAccount == true) {
+        send({
+            sender: 'PolarStore',
+            reciever: req.user.email,
+            subject: '👋 Welcome to PolarStore',
+            body_text:
+                '😎 You\'re now a member of PolarStore, how\'s it feel to be that cool?\n\n' +
+                '💗 We\'re glad you joined us on this community. Here\'s a quick guide on what you can do:\n' +
+                '\t- You can post apps, it\'s very easy to - as well!\n' +
+                '\t- You can edit your prefrences! Some prefrences may even be globally saved.\n' +
+                '\t- You can like and dislike posts, contributing to the community.\n\n' +
+                '👉 Remember that PolarStore is still in beta and you should expect bugs. Report bugs at the Discord.'
+        });
+    }
+
     App.find({}, (err, apps) => {
         if(err) return res.render('message', { error: true, message: 'We couldn\'t load the apps on the database!' });
         res.render('index', { apps: apps, user: req.user });
