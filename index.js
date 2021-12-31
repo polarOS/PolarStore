@@ -30,8 +30,7 @@ require('./api/auth/strategies/Discord');
 app.use(session({
     secret: process.env.PASSPORT_SECRET,
     saveUninitialized: false,
-    resave: false,
-    cookie: { expires : new Date(Date.now() + 3600000) }
+    resave: false
 }));
 
 app.use(passport.session());
