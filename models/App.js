@@ -16,7 +16,8 @@ const appSchema = new Schema({
     language: String,
     maturityRating: String,
     category: String,
-    reviews: Array
+    reviews: Array,
+    createdAt: Date
 });
 
 module.exports = model('App', appSchema);
