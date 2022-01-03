@@ -37,27 +37,18 @@ app.use(passport.session());
 
 // Views
 app.get('/', async (req, res) => {
-    const { newAccount } = require('./api/auth/strategies/Discord');
-    const { send } = require('./utils/mail');
-
-    if(req.user && newAccount == true) {
-        send({
-            sender: 'PolarStore',
-            reciever: req.user.email,
-            subject: '👋 Welcome to PolarStore',
-            body_text:
-                '😎 You\'re now a member of PolarStore, how\'s it feel to be that cool?\n\n' +
-                '💗 We\'re glad you joined us on this community. Here\'s a quick guide on what you can do:\n' +
-                '\t- You can post apps, it\'s very easy to - as well!\n' +
-                '\t- You can edit your prefrences! Some prefrences may even be globally saved.\n' +
-                '\t- You can like and dislike posts, contributing to the community.\n\n' +
-                '👉 Remember that PolarStore is still in beta and you should expect bugs. Report bugs at the Discord.'
-        });
-    }
-
     App.find({}, (err, apps) => {
         if(err) return res.render('message', { error: true, message: 'We couldn\'t load the apps on the database!' });
         res.render('index', { apps: apps, user: req.user });
+    });
+});
+
+app.get('/reports', async (req, res) => {
+    if(!req.user || !req.user.polarStore.admin) return res.redirect('/');
+
+    App.find({}, (err, apps) => {
+        if(err) return res.render('message', { error: true, message: 'We couldn\'t load the apps on the database!' });
+        res.render('reports', { apps: apps, user: req.user });
     });
 });
 
@@ -68,37 +59,77 @@ app.get('/apps/:id', (req, res) => {
     });
 });
 
+app.get('/apps/:id/report', (req, res) => {
+    if(!req.isAuthenticated())
+        return res.redirect(`/apps/${req.params.id}`);
+
+    App.findOne({_id: req.params.id}, (err, app) => {
+        if(err) return res.render('message', { error: true, message: 'Unable to find the specified app!' });
+        res.render('report', { app: app, user: req.user });
+    });
+});
+
+app.get('/apps/:id/edit', async (req, res) => {
+    if(!req.isAuthenticated())
+        return res.redirect(`/apps/${req.params.id}`);
+
+    App.findOne({_id: req.params.id}, (err, app) => {
+        if(app.author.discordId != req.user.discordId) return res.redirect(`/apps/${req.params.id}`);
+
+        res.render('edit-app', { app: app, user: req.user });
+    });
+});
+
 app.get('/users/:id', async (req, res) => {
     const user = await User.findOne({discordId: req.params.id});
-    if(!user) return res.render('message', { error: true, message: 'Unable to find the specified user!' });
+    if(!user || !user.polarStore) return res.render('message', { error: true, message: 'Unable to find the specified user!' });
+    if(req.user && req.user.discordId == req.params.id && !user.polarStore) {
+        req.logout();
+        return res.redirect('/');
+    }
+
     res.render('user', { profile: user, user: req.user });
 });
 
-app.get('/users/:id/prefrences', async (req, res) => {
+app.get('/users/:id/preferences', async (req, res) => {
     if(!req.isAuthenticated()) {
         return res.redirect(`/`);
     }
 
-    const user = await User.findOne({discordId: req.params.id});
-    if(req.user.discordId != user.discordId) return res.redirect(`/users/${req.params.id}`);
-    res.render('prefrences', { profile: user, user: req.user });
-});
-
-app.get('/login', (req, res) => {
-    res.render('login', { error: req.query.error });
-});
-
-app.get('/post-app', (req, res) => {
-    if(!req.isAuthenticated()) {
+    if(req.user.discordId != req.params.id) return res.redirect(`/users/${req.params.id}`);
+    if(!req.user.polarStore) {
+        req.logout();
         return res.redirect('/');
     }
 
-    if(req.query.success == 'true') {
-        res.render('post-app', { success: true });
-        return;
+    res.render('preferences', { profile: req.user, user: req.user });
+});
+
+app.get('/login', (req, res) => {
+    if(req.isAuthenticated())
+        return res.redirect('/');
+
+    res.render('login', { error: req.query.error });
+});
+
+app.get('/logout', (req, res) => {
+    if(!req.isAuthenticated())
+        return res.redirect('/');
+
+    req.logout();
+    res.redirect('/');
+});
+
+app.get('/post-app', (req, res) => {
+    if(!req.isAuthenticated())
+        return res.redirect('/');
+
+    if(!req.user.polarStore) {
+        req.logout();
+        return res.redirect('/');
     }
 
-    res.render('post-app', { success: false });
+    res.render('post-app', { success: req.query.success === 'true' ? true : false });
 });
 
 // API

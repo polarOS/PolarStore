@@ -7,6 +7,29 @@
 
         <div class="container">
             <div class="card border-0 mb-3">
+                <% if(app.maturityRating == "R") { %>
+                    <div class="modal" tabindex="-1" id="18plus">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title text-dark fw-bold">Wait!</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+
+                                <div class="modal-body">
+                                    <p class="text-dark">This app may contain content that is harmful to young people. If you are not 18 years of age or older, please press "I'm underage" now.</p>
+                                    <p class="text-dark fst-italic">This was a setting by the developer, if this was an error, please contact the developer and not us.</p>
+                                </div>
+
+                                <div class="modal-footer">
+                                    <a type="button" class="btn btn-secondary" href="/">I'm underage</a>
+                                    <a type="button" class="btn btn-primary" data-bs-dismiss="modal">I'm 18 or older</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+
                 <img src="<%- app.logo %>" alt="Image not avaliable" class="card-img-top" onerror="imgError(this)" style="max-height: 500px; width: 100%; object-fit: cover;">
                 <div class="card-body">
                     <p class="h5 card-title fw-light d-inline"><%- app.name %> - v<%- app.version %></p>
@@ -19,6 +42,8 @@
                         <form action="/api/apps/<%- app.id %>/dislike" method="post" class="mb-0 d-inline">
                             <p class="h6 d-inline"><button class="btn btn-primary input-outline-0"><i class="fas fa-thumbs-down"></i></button> <%- app.dislikes %></p>
                         </form>
+
+                        <a class="text-danger ms-2 decoration-none" href="/apps/<%- app._id %>/report" title="Report this app"><i class="fa-solid fa-circle-exclamation"></i></a>
                     </div>
 
                     <p class="card-subtitle text-muted"><%- app.shortDescription %></p>
@@ -27,6 +52,10 @@
                         <a href="<%- app.download %>" class="btn btn-primary input-outline-0" name="type" value="download" target="_blank">Download App</a>
                         <a href="/" class="btn btn-primary input-outline-0">Back Home</a>
                         <input type="hidden" name="download" value="<%- app.download %>">
+
+                        <% if(user && app.author.discordId == user.discordId) { %>
+                            <a href="/apps/<%- app.id %>/edit" class="btn btn-primary input-outline-0">Edit App</a>
+                        <% } %>
 
                         <% if(user && user.polarStore.admin || user && app.author.discordId == user.discordId) { %>
                             <form action="/api/apps/<%- app._id %>/delete" method="post" class="mb-0 d-inline">
@@ -91,6 +120,8 @@
                             <button type="submit" class="btn btn-primary btn-block input-outline-0">Submit Review</button>
                         </form>
                     <% } %>
+
+                    <p class="text-muted">This app was created at <%- app.createdAt %></p>
                 </div>
             </div>
         </div>
@@ -118,5 +149,7 @@
         limitReachedClass: "text text-danger"
     });
 
-    $('#content').val(escapeHtml($('#content').val()));
+    $(window).on('load', function() {
+        $('#18plus').modal('show');
+    });
 </script>

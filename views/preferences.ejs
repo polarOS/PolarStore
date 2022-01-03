@@ -19,17 +19,17 @@
                         >
                     </a>
 
-                    <p class="h5 card-title fw-light mb-0 fw-lighter"><%- profile.username %>'s Prefrences</p>
+                    <p class="h5 card-title fw-light mb-0 fw-lighter"><%- profile.username %>'s Preferences</p>
                     <p class="card-title text-muted"><%- profile.polarStore.motto ? profile.polarStore.motto : 'No motto' %></p>
 
-                    <form class="card-footer mt-auto border-0 p-0 mb-0 d-inline" method="POST" action="/api/users/<%- profile.discordId %>/prefrences/save" style="background: transparent;">
+                    <form class="card-footer mt-auto border-0 p-0 mb-0 d-inline" method="POST" action="/api/users/<%- profile.discordId %>/preferences/save" style="background: transparent;">
                         <input placeholder="Motto" maxlength="100" id="motto" name="motto" class="form-control mb-1" style="resize: none;">
                         <textarea placeholder="Description" maxlength="1500" id="bio" name="bio" class="form-control mb-1" style="resize: none;"></textarea>
 
-                        <button type="submit" class="btn btn-primary input-outline-0">Save Prefrences</button>
+                        <button type="submit" class="btn btn-primary input-outline-0">Save Preferences</button>
                     </form>
 
-                    <form class="card-footer mt-auto border-0 p-0 mb-0 d-inline" method="POST" action="/api/users/<%- profile.discordId %>/delete" style="background: transparent;">
+                    <form class="card-footer mt-auto border-0 p-0 mb-0 d-inline" method="POST" action="/api/users/<%- profile.discordId %>/delete">
                         <button type="submit" class="btn btn-danger input-outline-0" style="margin-top: 2px;">Delete Account</button>
                     </form>
                 </div>

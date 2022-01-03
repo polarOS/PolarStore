@@ -49,7 +49,11 @@ const strat = new DiscordStrategey({
                     apps: [],
                     likes: [],
                     motto: '',
-                    bio: ''
+                    bio: '',
+                    admin: false,
+                    electAdmins: false,
+                    psDeveloper: false,
+                    createdAt: new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', minute: 'numeric', hour: 'numeric', second: 'numeric' })
                 }
             });
 
@@ -65,26 +69,70 @@ const strat = new DiscordStrategey({
 
                 PolarStore data is updated FROM PolarStore, do NOT update PolarStore data
             */
-            if(!user.polarStore) this.newAccount = true;
 
-            const savedUser = await User.findOneAndUpdate(
-                { _id: user.id }, {
-                username: profile.username,
-                discriminator: profile.discriminator,
-                avatar: profile.avatar,
-                language: profile.locale,
-                email: profile.email,
-                createdAt: profile.fetchedAt,
-                discordId: profile.id,
-                polarStore: {
-                    apps: user.polarStore.apps ? user.polarStore.apps : [],
-                    likes: user.polarStore.likes ? user.polarStore.likes : [],
-                    motto: user.polarStore.motto ? user.polarStore.motto : '',
-                    bio: user.polarStore.bio ? user.polarStore.bio : '',
-                }
-            });
+            if(user.polarStore == undefined) {
+                this.newAccount = true;
 
-            done(null, savedUser);
+                const savedUser = await User.findOneAndUpdate(
+                    { discordId: profile.id }, {
+                    username: profile.username,
+                    discriminator: profile.discriminator,
+                    avatar: profile.avatar,
+                    language: profile.locale,
+                    email: profile.email,
+                    createdAt: profile.fetchedAt,
+                    discordId: profile.id,
+                    polarStore:  {
+                        apps: [],
+                        likes: [],
+                        motto: '',
+                        bio: '',
+                        admin: false,
+                        electAdmins: false,
+                        psDeveloper: false,
+                        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', minute: 'numeric', hour: 'numeric', second: 'numeric' })
+                    }
+                });
+
+                done(null, savedUser);
+                return;
+            }
+
+            if(user.polarStore.createdAt == undefined) {
+                const savedUser = await User.findOneAndUpdate(
+                    { discordId: profile.id }, {
+                    username: profile.username,
+                    discriminator: profile.discriminator,
+                    avatar: profile.avatar,
+                    language: profile.locale,
+                    email: profile.email,
+                    polarStore:  {
+                        apps: user.polarStore.apps,
+                        likes: user.polarStore.likes,
+                        motto: user.polarStore.motto,
+                        bio: user.polarStore.bio,
+                        admin: user.polarStore.admin,
+                        electAdmins: user.polarStore.electAdmins,
+                        psDeveloper: user.polarStore.psDeveloper,
+                        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', minute: 'numeric', hour: 'numeric', second: 'numeric' })
+                    }
+                });
+
+                done(null, savedUser);
+                return;
+            } else {
+                const savedUser = await User.findOneAndUpdate(
+                    { discordId: profile.id }, {
+                    username: profile.username,
+                    discriminator: profile.discriminator,
+                    avatar: profile.avatar,
+                    language: profile.locale,
+                    email: profile.email
+                });
+
+                done(null, savedUser);
+                return;
+            }
         }
     } catch(err) {
         console.log(err);

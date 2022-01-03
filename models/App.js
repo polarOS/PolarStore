@@ -11,6 +11,7 @@ const appSchema = new Schema({
     likes: Number,
     dislikes: Number,
     author: Object,
+    reportFiled: Boolean,
     compatibility: String,
     language: String,
     maturityRating: String,

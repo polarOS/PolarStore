@@ -20,7 +20,20 @@
                         >
                     </a>
 
-                    <p class="h5 card-title fw-light mb-0 fw-lighter"><%- profile.username %></p>
+                    <p class="h5 card-title fw-light mb-0 fw-lighter d-inline"><%- profile.username %></p>
+                    
+                    <% if(profile.polarStore.psDeveloper) { %>
+                        <img src="/images/polaros-bear.png" height="18" class="d-inline" title="PolarStore Developer">
+                    <% } %>
+
+                    <% if(profile.polarStore.admin) { %>
+                        <i class="fas fa-shield-alt d-inline" title="PolarStore Admin"></i>
+                    <% } %>
+
+                    <% if(profile.polarStore.electAdmins) { %>
+                        <i class="fas fa-gavel d-inline" title="PolarStore Elector"></i>
+                    <% } %>
+
                     <p class="card-title text-muted"><%- profile.polarStore.motto ? profile.polarStore.motto : 'No motto' %></p>
 
                     <p class="card-text text-muted mb-0">About this user</p>
@@ -52,11 +65,53 @@
                         <p class="card-text">No apps</p>
                     <% } %>
 
+                    <% if(user && user.polarStore.electAdmins || user && user.polarStore.admin) { %>
+                        <hr>
+                    <% } %>
+
+                    <% if(user && user.polarStore.electAdmins) { %>
+                        <p class="card-text text-muted mb-0">Elector Panel</p>
+                        <% if(!profile.polarStore.admin) { %>
+                            <form action="/api/users/<%- profile.discordId %>/addAdmin" method="post" class="mb-1 mt-1 d-inline">
+                                <button class="btn btn-primary input-outline-0" name="type" value="download">Promote to Admin</button>
+                            </form>
+                        <% } else { %>
+                            <form action="/api/users/<%- profile.discordId %>/removeAdmin" method="post" class="mb-1 mt-1 d-inline">
+                                <button class="btn btn-danger input-outline-0" name="type" value="download">Demote from Admin</button>
+                            </form>
+                        <% } %>
+
+                        <% if(!profile.polarStore.psDeveloper) { %>
+                            <form action="/api/users/<%- profile.discordId %>/addDeveloper" method="post" class="mb-1 mt-1 d-inline">
+                                <button class="btn btn-primary input-outline-0" name="type" value="download">Promote to Developer</button>
+                            </form>
+                        <% } else { %>
+                            <form action="/api/users/<%- profile.discordId %>/removeDeveloper" method="post" class="mb-1 mt-1 d-inline">
+                                <button class="btn btn-danger input-outline-0" name="type" value="download">Demote from Developer</button>
+                            </form>
+                        <% } %>
+
+                        <% if(!profile.polarStore.electAdmins) { %>
+                            <form action="/api/users/<%- profile.discordId %>/addElectorial" method="post" class="mb-0 mt-1 d-inline">
+                                <button class="btn btn-primary input-outline-0" name="type" value="download">Promote to Elector</button>
+                            </form>
+                        <% } else { %>
+                            <form action="/api/users/<%- profile.discordId %>/removeElectorial" method="post" class="mb-0 mt-1 d-inline">
+                                <button class="btn btn-danger input-outline-0" name="type" value="download">Demote from Elector</button>
+                            </form>
+                        <% } %>
+                    <% } %>
+
                     <% if(user && user.polarStore.admin) { %>
-                        <form class="card-footer mt-auto border-0 p-0 mb-0" method="POST" action="/api/users/<%- profile.discordId %>/delete" style="background: transparent;">
+                        <p class="card-text text-muted mb-0 mt-2">Admin Panel</p>
+
+                        <form class="card-footer mt-auto border-0 p-0 mb-0 mt-1 d-inline" method="POST" action="/api/users/<%- profile.discordId %>/delete?admin=true">
                             <button type="submit" class="btn btn-danger input-outline-0">Delete Account</button>
                         </form>
                     <% } %>
+                    <hr>
+                    <p class="text-muted">PolarStore account created at <%- profile.polarStore.createdAt %></p>
+                    <p class="text-muted">Discord account created at <%- profile.createdAt %></p>
                 </div>
             </div>
         </div>
@@ -64,15 +119,6 @@
 </html>
 
 <script>
-    function escapeHtml(unsafe) {
-        return unsafe
-            .replace(/&/g, "&amp;")
-            .replace(/</g, "&lt;")
-            .replace(/>/g, "&gt;")
-            .replace(/"/g, "&quot;")
-            .replace(/'/g, "&#039;");
-    }
-
     $('#pfp').on('error', function () {
         $(this).attr('src', 'https://cdn.discordapp.com/embed/avatars/0.png');
     });
@@ -80,6 +126,4 @@
     $('#img').on('error', function () {
         $(this).attr('src', '/images/banner.jpg');
     });
-
-    $('#content').val(escapeHtml($('#content').val()));
 </script>

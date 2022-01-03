@@ -19,31 +19,32 @@
         <div class="text-center container position-absolute top-50 start-50 translate-middle" style="max-width: 480px; margin: auto;">
             <img src="/images/polaros-bear.png" height="50" class="mb-4 text-primary stroke">
 
-            <form action="/api/apps/post" method="POST" id="post">
-                <h2 class="mb-3 fw-bold text-primary">Post Application</h2>
+            <form action="/api/apps/<%- app.id %>/edit" method="POST" id="post">
+                <h2 class="mb-0 fw-bold text-primary">Edit Application</h2>
+                <p class="mb-3 fw-light text-black">Editing: <%- app.name %> (<%- app.id %>)</p>
                 <div class="input-group mb-1">
                     <label for="name" class="sr-only"></label>
-                    <input type="text" placeholder="Application Name" id="name" name="name" class="form-control" maxlength="24" required>
+                    <input type="text" placeholder="<%- app.name %>" id="name" name="name" class="form-control" maxlength="24">
 
                     <label for="version" class="sr-only"></label>
                     <span class="input-group-text" id="basic-addon1">v</span>
-                    <input type="text" placeholder="1.0.0" id="version" name="version" class="form-control" oninvalid="this.setCustomValidity('Please use the format \'x.x.x\' - if this wont submit, reload')" pattern="^[0-9.]+$" maxlength="5" required>
+                    <input type="text" placeholder="<%- app.version %>" id="version" name="version" class="form-control" oninvalid="this.setCustomValidity('Please use the format \'x.x.x\' - if this wont submit, reload')" pattern="^[0-9.]+$" maxlength="5">
                 </div>
 
                 <label for="shortDescription" class="sr-only"></label>
-                <input type="text" placeholder="Short Description (max. 150)" maxlength="150" id="shortDescription" name="shortDescription" class="form-control mb-1" style="resize: none;" required></input>
+                <input type="text" placeholder="<%- app.shortDescription %>" maxlength="150" id="shortDescription" name="shortDescription" class="form-control mb-1" style="resize: none;"></input>
 
                 <label for="longDescription" class="sr-only"></label>
-                <textarea placeholder="Long Description (max. 1500)" maxlength="1500" id="longDescription" name="longDescription" class="form-control mb-1" style="resize: none;" required></textarea>
+                <textarea placeholder="<%- app.longDescription %>" maxlength="1500" id="longDescription" name="longDescription" class="form-control mb-1" style="resize: none;"></textarea>
 
                 <label for="download" class="sr-only"></label>
-                <input type="text" placeholder="Download Link" id="download" name="download" class="form-control mb-1" oninvalid="this.setCustomValidity('Please use a link - if this wont submit, reload')" pattern="https://.*" required>
+                <input type="text" placeholder="<%- app.download %>" id="download" name="download" class="form-control mb-1" oninvalid="this.setCustomValidity('Please use a link - if this wont submit, reload')" pattern="https://.*">
 
                 <label for="icon" class="sr-only"></label>
-                <input type="text" placeholder="Banner image link (optional)" id="icon" name="icon" class="form-control mb-1">
+                <input type="text" placeholder="<%- app.logo %>" id="icon" name="icon" class="form-control mb-1">
 
                 <label for="compatibility"></label>
-                <select class="form-select mb-1" id="compatibility" name="compatibility" required>
+                <select class="form-select mb-1" id="compatibility" name="compatibility">
                     <option value="">Compatible with...</option>
                     <option value="PolarOS KDE">PolarOS KDE</option>
                     <option value="PolarOS XFCE">PolarOS XFCE</option>
@@ -52,7 +53,7 @@
                 <div class="input-group mb-1">
                     <label for="category"></label>
 
-                    <select class="form-select" id="category" name="category" required>
+                    <select class="form-select" id="category" name="category">
                         <option value="">Select a category...</option>
                         <option value="Gaming">Gaming</option>
                         <option value="Strategy">Strategy</option>
@@ -64,7 +65,7 @@
                         <option value="Other">Other</option>
                     </select>
 
-                    <select class="form-select" id="language" name="language" required>
+                    <select class="form-select" id="language" name="language">
                         <option value="">Select a language...</option>
                         <option value="English">English</option>
                         <option value="Spanish">Spanish</option>
@@ -77,7 +78,7 @@
                     </select>
                 </div>
 
-                <select class="form-select" id="maturityRating" name="maturityRating" required>
+                <select class="form-select" id="maturityRating" name="maturityRating">
                     <option value="">Select a maturity rating...</option>
                     <option value="G">G (Everyone)</option>
                     <option value="PG">PG (7 and up)</option>
@@ -96,15 +97,6 @@
         </div>
     </body>
 </html>
-
-<% if(success) { %>
-    <script>
-        $(document).ready(() => {
-            $('#post').hide();
-            $('#success').show();
-        });
-    </script>
-<% } %>
 
 <script>
     function escapeHtml(unsafe) {

@@ -27,14 +27,30 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <% if(user) { %>
                             <li><a class="dropdown-item" href="/users/<%- user.discordId %>">Profile</a></li>
-                            <li><a class="dropdown-item" href="/users/<%- user.discordId %>/prefrences">Prefrences</a></li>
+                            <li><a class="dropdown-item" href="/users/<%- user.discordId %>/preferences">Preferences</a></li>
                             <li><div class="dropdown-divider"></div></li>
                             <li><a class="dropdown-item" href="/post-app">Post Application</a></li>
+                            <li><div class="dropdown-divider"></div></li>
+                            <li><a class="dropdown-item" href="/logout">Logout</a></li>
                         <% } else { %>
                             <li><a class="dropdown-item" href="/login">Login</a></li>
                         <% } %>
                     </ul>
                 </li>
+
+                <% if(user && user.polarStore.admin == true) { %>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Admin Settings
+                        </a>
+    
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                            <% if(user) { %>
+                                <li><a class="dropdown-item" href="/reports">Review Reports</a></li>
+                            <% } %>
+                        </ul>
+                    </li>
+                <% } %>
 
                 <li class="nav-link">
                     <a class="fab fa-discord nav-link" href="https://discord.gg/6CHXe5xJq8"></a>

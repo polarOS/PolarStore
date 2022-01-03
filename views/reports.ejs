@@ -1,0 +1,43 @@
+<html>
+    <%- include('./partials/head.ejs') %>
+
+    <body>
+        <%- include('./partials/nav.ejs') %>
+        <div class="mt-3"></div>
+
+        <% const filteredApps = apps.filter(app => app.reportFiled === true); %>
+
+        <% if(filteredApps.length == 0) { %>
+            <p class="text-muted text-center">🎉 No reports found! Click <a href="/">here</a> to go home.</p>
+        <% } %>
+
+        <div class="container">
+            <div class="row row-cols-1 row-cols-md-2 g-4">
+                <% for(const app of filteredApps) { %>
+                    <div class="col">
+                        <div class="card border-0 h-100">
+                            <img src="<%- app.logo %>" alt="Image not avaliable" class="card-img-top" onerror="imgError(this)" style="max-height: 100px; width: 100%; object-fit: cover;">
+                            <div class="card-body d-flex flex-column">
+                                <p class="h5 card-title fw-light"><%- app.name %></p>
+                                <p class="card-text"><%- app.shortDescription %></p>
+                                <div class="card-footer mt-auto border-0 p-0" style="background: transparent;">
+                                    <a href="<%- app.download %>" class="btn btn-primary input-outline-0" name="type" value="download" target="_blank">Download App</a>
+                                    <a class="input-outline-0 btn btn-primary" name="type" value="read" href="/apps/<%- app._id %>">Read More</a>
+                                    <form action="/api/apps/<%- app.id %>/report/rm" method="POST" class="d-inline">
+                                        <button class="input-outline-0 btn btn-danger" style="margin-top: 2px;" name="type" value="read" href="/apps/<%- app._id %>">Conclude Report</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script>
+    $('img').on('error', function () {
+        $(this).attr('src', '/images/banner.jpg');
+    });
+</script>
