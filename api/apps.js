@@ -36,7 +36,7 @@ router.post('/post', async(req, res, next) => {
         reviews: [],
         dislikes: 0,
         likes: 0,
-        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', minute: 'numeric', hour: 'numeric', second: 'numeric' })
+        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', minute: 'numeric', hour: 'numeric' })
     });
 
     User.findOne({ discordId: req.user.discordId }, (err, user) => {
@@ -88,7 +88,7 @@ router.post('/:id/reviews/post', async(req, res, next)  => {
     }
 
     App.findOne({_id: req.params.id}, async (err, app) => {
-        if(err || !app || !req.user) return res.render('message', { error: true, message: `Unable to post review for ${app.name}, the app probably doesn't exist` });
+        if(err || !app || !req.user) return res.render('message', { error: true, message: `Unable to post review for ${app.name}, the app probably doesn't exist or you aren't logged in` });
 
         app.reviews.push({
             author: {
@@ -101,7 +101,8 @@ router.post('/:id/reviews/post', async(req, res, next)  => {
                 createdAt: req.user.createdAt
             },
             content: req.body.content,
-            id: app.reviews.length + 1
+            id: app.reviews.length + 1,
+            createdAt: new Date().toLocaleDateString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', minute: 'numeric', hour: 'numeric' })
         });
 
         await app.save();

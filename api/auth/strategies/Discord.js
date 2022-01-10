@@ -53,7 +53,7 @@ const strat = new DiscordStrategey({
                     admin: false,
                     electAdmins: false,
                     psDeveloper: false,
-                    createdAt: new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', minute: 'numeric', hour: 'numeric', second: 'numeric' })
+                    createdAt: new Date().toLocaleDateString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', minute: 'numeric', hour: 'numeric' })
                 }
             });
 
@@ -90,7 +90,7 @@ const strat = new DiscordStrategey({
                         admin: false,
                         electAdmins: false,
                         psDeveloper: false,
-                        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', minute: 'numeric', hour: 'numeric', second: 'numeric' })
+                        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', minute: 'numeric', hour: 'numeric' })
                     }
                 });
 
@@ -98,7 +98,7 @@ const strat = new DiscordStrategey({
                 return;
             }
 
-            if(user.polarStore.createdAt == undefined) {
+            if(user.polarStore.createdAt == null) {
                 const savedUser = await User.findOneAndUpdate(
                     { discordId: profile.id }, {
                     username: profile.username,
@@ -114,7 +114,7 @@ const strat = new DiscordStrategey({
                         admin: user.polarStore.admin,
                         electAdmins: user.polarStore.electAdmins,
                         psDeveloper: user.polarStore.psDeveloper,
-                        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', minute: 'numeric', hour: 'numeric', second: 'numeric' })
+                        createdAt: new Date().toLocaleDateString("en-US", { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric', minute: 'numeric', hour: 'numeric' })
                     }
                 });
 

@@ -30,7 +30,7 @@
                     </div>
                 <% } %>
 
-                <img src="<%- app.logo %>" alt="Image not avaliable" class="card-img-top" onerror="imgError(this)" style="max-height: 500px; width: 100%; object-fit: cover;">
+                <img src="<%- app.logo %>" alt="Image not avaliable" id="img" class="card-img-top" onerror="imgError(this)" style="max-height: 500px; width: 100%; object-fit: cover;">
                 <div class="card-body">
                     <p class="h5 card-title fw-light d-inline"><%- app.name %> - v<%- app.version %></p>
 
@@ -92,24 +92,30 @@
                         <p class="d-inline">No reviews yet</span></p>
                     <% } else { %>
                         <% app.reviews.forEach((review) => { %>
-                            <div class="container p-2 mb-2 rounded tb-black">
-                                <% if(review.author.discordId == app.author.discordId) { %>
-                                    <i class="fas fa-crown d-inline"></i>
-                                <% } else { %>
-                                    <i class="fas fa-user-alt d-inline"></i>
-                                <% } %>
+                            <div class="container p-2 mb-2 rounded bg-dark" >
+                                <img
+                                    src="https://cdn.discordapp.com/avatars/<%- review.author.discordId %>/<%- review.author.avatar %>.png"
+                                    class="img-square-wrapper"
+                                    alt="Image not avaliable"
+                                    class="card-img-top"
+                                    id="pfp"
+                                    width="25px"
+                                    style="border-radius: 50%;"
+                                >
 
-                                <!-- <a href="#review-<%- review.id %>"><i class="fas fa-link tt-white"></i></a> -->
-                                <p class="mb-1 card-text d-inline"><a href="/users/<%- review.author.discordId %>" class="tt-white"><%- review.author.username %></span></a>
-                                <form action="/api/apps/<%- app.id %>/reviews/<%- review.id %>/delete" method="post" class="mb-0 d-inline float-end">
+                                <p class="mb-1 card-text d-inline"><a href="/users/<%- review.author.discordId %>" class="text-primary text-decoration-none"><%- review.author.username %></a></p>
+                                <p class="mb-1 card-text d-inline"><%- review.content %></span></p>
+                                <span class="text-muted float-end"><%- review.createdAt %></span>
+
+                                <form action="/api/apps/<%- app.id %>/reviews/<%- review.id %>/delete" method="post" class="mb-0">
                                     <% if(user) { %>
                                         <% if(user.discordId == app.author.discordId || review.author.discordId == user.discordId) { %>
-                                            <button class="btn btn-danger input-outline-0 btn-sm m-1"><i class="fas fa-trash"></i></button>
+                                            <a class="text-decoration-none fw-light text-muted" role="button" onclick="this.closest('form').submit();return false;">
+                                                <small>Remove Comment</small>
+                                            </a>
                                         <% } %>
                                     <% } %>
                                 </form>
-
-                                <p class="mb-1 card-text"><%- review.content %></span></p>
                             </div>
                         <% }); %>
                     <% } %>
@@ -138,8 +144,12 @@
             .replace(/'/g, "&#039;");
     }
 
-    $('img').on('error', function () {
+    $('#img').on('error', function () {
         $(this).attr('src', '/images/banner.jpg');
+    });
+
+    $('#pfp').on('error', function () {
+        $(this).attr('src', 'https://cdn.discordapp.com/embed/avatars/0.png');
     });
 
     $('textarea[maxlength], #shortDescription').maxlength({

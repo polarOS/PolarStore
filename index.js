@@ -37,6 +37,11 @@ app.use(passport.session());
 
 // Views
 app.get('/', async (req, res) => {
+    if(req.user && !req.user.polarStore) {
+        req.logout();
+        return res.render('message', { error: true, message: 'You have been logged out or your account has been deleted.' });
+    }
+    
     App.find({}, (err, apps) => {
         if(err) return res.render('message', { error: true, message: 'We couldn\'t load the apps on the database!' });
         res.render('index', { apps: apps, user: req.user });
@@ -53,6 +58,11 @@ app.get('/reports', async (req, res) => {
 });
 
 app.get('/apps/:id', (req, res) => {
+    if(req.user && !req.user.polarStore) {
+        req.logout();
+        return res.render('message', { error: true, message: 'You have been logged out or your account has been deleted.' });
+    }
+
     App.findOne({_id: req.params.id}, (err, app) => {
         if(err) return res.render('message', { error: true, message: 'Unable to find the specified app!' });
         res.render('app', { app: app, user: req.user });
@@ -83,9 +93,10 @@ app.get('/apps/:id/edit', async (req, res) => {
 app.get('/users/:id', async (req, res) => {
     const user = await User.findOne({discordId: req.params.id});
     if(!user || !user.polarStore) return res.render('message', { error: true, message: 'Unable to find the specified user!' });
-    if(req.user && req.user.discordId == req.params.id && !user.polarStore) {
+    
+    if(req.user && !req.user.polarStore) {
         req.logout();
-        return res.redirect('/');
+        return res.render('message', { error: true, message: 'You have been logged out or your account has been deleted.' });
     }
 
     res.render('user', { profile: user, user: req.user });
@@ -97,9 +108,10 @@ app.get('/users/:id/preferences', async (req, res) => {
     }
 
     if(req.user.discordId != req.params.id) return res.redirect(`/users/${req.params.id}`);
-    if(!req.user.polarStore) {
+    
+    if(req.user && !req.user.polarStore) {
         req.logout();
-        return res.redirect('/');
+        return res.render('message', { error: true, message: 'You have been logged out or your account has been deleted.' });
     }
 
     res.render('preferences', { profile: req.user, user: req.user });
@@ -124,9 +136,9 @@ app.get('/post-app', (req, res) => {
     if(!req.isAuthenticated())
         return res.redirect('/');
 
-    if(!req.user.polarStore) {
+    if(req.user && !req.user.polarStore) {
         req.logout();
-        return res.redirect('/');
+        return res.render('message', { error: true, message: 'You have been logged out or your account has been deleted.' });
     }
 
     res.render('post-app', { success: req.query.success === 'true' ? true : false });
